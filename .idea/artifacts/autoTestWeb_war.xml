@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="autoTestWeb:war">
+    <output-path>$PROJECT_DIR$/../autoTestWeb/target</output-path>
+    <root id="archive" name="autoTestWeb.war">
+      <element id="artifact" artifact-name="autoTestWeb:war exploded" />
+    </root>
+  </artifact>
+</component>
