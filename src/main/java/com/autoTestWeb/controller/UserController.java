@@ -17,9 +17,9 @@ import javax.swing.*;
 public class UserController {
     private static final Logger LOGGER = Logger.getLogger(UserController.class);
 
-    @Autowired
+    @Autowired(required = false)
     private User user;
-    @Autowired
+    @Autowired(required = false)
     private UserService userService;
 
     @RequestMapping(value = "/home.go")

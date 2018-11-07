@@ -16,18 +16,20 @@
 <body>
 <div id="loginbox">
     <div style="text-align:center;"><h2>自动化</h2></div>
-    <div class="maincontent">
-        <lable>USERNAME:</lable>
-        <input type="text" name="userName" class="form-control">
-    </div>
-    <div class="maincontent">
-        <lable>PASSWORD:</lable>
-        <input type="password" name="passWord" class="form-control">
-    </div>
-    <div class="center maincontent">
-        <input type="submit" value="/login.go" class="btn btn-primary">
-        <div>
+    <form method="post" action="/login.go">
+        <div class="maincontent">
+            <lable>USERNAME:</lable>
+            <input type="text" name="userName" class="form-control">
         </div>
-    </div>
+        <div class="maincontent">
+            <lable>PASSWORD:</lable>
+            <input type="password" name="passWord" class="form-control">
+        </div>
+        <div class="center maincontent">
+            <input type="submit" value="LOGIN" class="btn btn-primary">
+            <div>
+            </div>
+        </div>
+    </form>
 </body>
 </html>
