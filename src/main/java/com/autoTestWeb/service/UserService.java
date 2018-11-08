@@ -1,10 +1,9 @@
 package com.autoTestWeb.service;
 
 import com.autoTestWeb.controller.UserController;
-import com.autoTestWeb.dao.UserMapper;
+import com.autoTestWeb.dao.UserDao;
 import com.autoTestWeb.model.User;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -15,11 +14,11 @@ public class UserService{
 	private static final Logger LOGGER = Logger.getLogger(UserController.class);
 
 	@Resource
-	private UserMapper userMapper;
+	private UserDao userDao;
 
 	public int deleteUser(int id) {
 		try {
-			return userMapper.deleteUser(id);
+			return userDao.deleteUser(id);
 		} catch (Exception e) {
 			LOGGER.info(e.toString());
 			throw new RuntimeException(e.toString());
@@ -27,12 +26,12 @@ public class UserService{
 	}
 
 	public List<User> findUserList() {
-		return userMapper.findUserList();
+		return userDao.findUserList();
 	}
 
 	public int insertUser(User user) {
 		try {
-			return userMapper.insertUser(user);
+			return userDao.insertUser(user);
 		} catch (Exception e) {
 			LOGGER.info(e.toString());
 			throw new RuntimeException(e.toString());
@@ -41,7 +40,7 @@ public class UserService{
 
 	public int updateUser(User user) {
 		try {
-			return userMapper.updateUser(user);
+			return userDao.updateUser(user);
 		} catch (Exception e) {
 			LOGGER.info(e.toString());
 			throw new RuntimeException(e.toString());
@@ -49,22 +48,14 @@ public class UserService{
 	}
 
 	public User findUserByName(String username) {
-		return userMapper.findUserByName(username);
+		return userDao.findUserByName(username);
 	}
 
 	public User findUserById(int id) {
-		User user= userMapper.findUserById(id);
+		User user= userDao.findUserById(id);
 		if(user==null){
 			user=new User();
 		}
 		return user;
-	}
-
-	public UserMapper getUserMapper() {
-		return userMapper;
-	}
-
-	public void setUserMapper(UserMapper userMapper) {
-		this.userMapper = userMapper;
 	}
 }

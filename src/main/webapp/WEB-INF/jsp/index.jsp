@@ -4,6 +4,7 @@
 	String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
 %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -138,16 +139,16 @@
 		   	</div>
 		   	<div class="collapse navbar-collapse" id="example-navbar-collapse" style="width:50%;float:left;">
 				<ul class="nav navbar-nav">
-				<s:iterator value="menuList" id="menu">
-					<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><s:property value="#menu.name" /><b class="caret"></b></a>
+				<c:forEach items="${menuList}" var="menu">
+					<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">${menu.name}<b class="caret"></b></a>
 						<ul class="dropdown-menu">
-							<s:iterator value="#menu.menuList" id="childMenu">
-								<li><a href="javascript:void(0))" value="<s:property value="#childMenu.action" />" class="link"><s:property value="#childMenu.name" /></a></li>
+							<c:forEach items="${menu.menuList}" var="childMenu">
+								<li><a href="javascript:void(0)" value="${childMenu.name}" class="link">${childMenu.name}</a></li>
 								<li class="divider"></li>
-							</s:iterator>
+							</c:forEach>
 						</ul>
 					</li>
-				</s:iterator>
+				</c:forEach>
 				</ul>
 				
 				

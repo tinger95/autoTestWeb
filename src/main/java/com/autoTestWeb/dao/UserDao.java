@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.autoTestWeb.model.User;
 
-public interface UserMapper {
+public interface UserDao {
 	User findUserByName(String username);
 	List<User> findUserList();
 	int deleteUser(int id);
