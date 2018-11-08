@@ -17,8 +17,17 @@ import javax.swing.*;
 public class UserController {
     private static final Logger LOGGER = Logger.getLogger(UserController.class);
 
-    @Autowired(required = false)
+    //@Autowired(required = false)
     private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Autowired(required = false)
     private UserService userService;
 
