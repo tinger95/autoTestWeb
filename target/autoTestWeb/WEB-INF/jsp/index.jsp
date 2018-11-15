@@ -39,11 +39,11 @@
 	function logout(){
 		$.ajax({
 			type : 'POST',
-			url : "user/logout",
+			url : "logout.go",
 			async : false,
 			success : function(data) {
 				if (data > 0) {
-					window.location.reload();
+					window.location="home.go";
 				}
 			}
 		});
@@ -143,7 +143,7 @@
 					<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">${menu.name}<b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<c:forEach items="${menu.menuList}" var="childMenu">
-								<li><a href="javascript:void(0)" value="${childMenu.name}" class="link">${childMenu.name}</a></li>
+								<li><a href="javascript:void(0)" value="${childMenu.action}.go" class="link">${childMenu.name}</a></li>
 								<li class="divider"></li>
 							</c:forEach>
 						</ul>
@@ -167,7 +167,7 @@
 		</div>
 		<div class="clear"></div>
 		<div id="bottom">
-			<div id="bottomcontent">cd</div>
+			<div id="bottomcontent">自动化管理网站-出品人BI测试组</div>
 		</div>
 	</div>
 </body>

@@ -7,6 +7,7 @@ import com.autoTestWeb.model.UserGroup;
 import com.autoTestWeb.service.MenuService;
 import com.autoTestWeb.service.RoleService;
 import com.autoTestWeb.service.UserService;
+import com.sun.deploy.net.HttpResponse;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,9 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 @Controller
@@ -73,10 +77,10 @@ public class UserController {
             } else {
                 if (password.equals(user.getPassword())) {
                     //用户名密码正确
-                    modelMap.put("user", user);
+                    request.getSession().setAttribute("user", user);
                     //获取菜单信息
-//                    request.getSession().setAttribute("userId", user.getId());
-//                    request.getSession().setAttribute("userName", user.getName());
+                    request.getSession().setAttribute("userId", user.getId());
+                    request.getSession().setAttribute("userName", user.getName());
                     Role role = roleService.findRoleById(user.getRoleId());
                     modelMap.put("isAdmin",role.getIsAdmin());
                     Menu conditionMenu = new Menu();
@@ -94,5 +98,32 @@ public class UserController {
             }
             return "login";
         }
+    }
+
+    /**
+     *  退出
+     */
+    @RequestMapping(value = "logout.go")
+    public void logout(HttpServletRequest request, HttpServletResponse response)
+    {
+        try
+        {
+            request.getSession().removeAttribute("user");
+            PrintWriter writer;
+            try {
+                writer = response.getWriter();
+                writer.print(1);
+                writer.flush();
+                writer.close();
+            } catch (IOException e) {
+                LOGGER.info(e.toString());
+                throw new RuntimeException(e.toString());
+            }
+        }catch(Exception e)
+        {
+            LOGGER.info(e.toString());
+            throw new RuntimeException(e.getMessage(),e.getCause());
+        }
+
     }
 }
