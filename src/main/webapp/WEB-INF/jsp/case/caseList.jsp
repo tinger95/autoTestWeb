@@ -8,9 +8,9 @@
 <script>
 	
 	$(function() {
-		getAllUser(<%=session.getAttribute("userId")%>);
-		getAllCateogry($("#secCategoryList"),$("#secUserList").val());
-		findCaseList();
+		//getAllUser(<%=session.getAttribute("userId")%>);
+//		getAllCateogry($("#secCategoryList"),$("#secUserList").val());
+//		findCaseList();
 	});
 	
 	function findCaseList() {

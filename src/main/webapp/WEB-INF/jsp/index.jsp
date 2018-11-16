@@ -77,8 +77,8 @@
 		var p=$.cookie("pageTitle");
 		if(u==undefined){
 			index=index+1;
-			array[index]={title:"AutoTest",url:"welcome"};
-			$.get("welcome", function(data) {
+			array[index]={title:"AutoTest",url:"welcome.go"};
+			$.get("welcome.go", function(data) {
 	            $('#maincontent').html(data);
 	        });
 		}else{
@@ -143,7 +143,7 @@
 					<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">${menu.name}<b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<c:forEach items="${menu.menuList}" var="childMenu">
-								<li><a href="javascript:void(0)" value="${childMenu.action}.go" class="link">${childMenu.name}</a></li>
+								<li><a href="javascript:void(0);" value="${childMenu.action}.go" class="link">${childMenu.name}</a></li>
 								<li class="divider"></li>
 							</c:forEach>
 						</ul>
