@@ -9,7 +9,7 @@ function removeLoading(){
 function getAllUser(userId){
 	$.ajax({
 		type : 'POST',
-		url : "user/findUserList",
+		url : "user/findUserList.go",
 		async : false,
 		success : function(data) {
 			var userList=data["aaData"];
@@ -44,23 +44,40 @@ function getAllEnvironment(){
 		}
 	});
 }
-function getAllCateogry(obj,userId){
+function getAllCateogry(userId){
 	$.ajax({
 		type : 'POST',
-		url : "manage/findCategoryListByUserId?category.userId="+userId,
+		url : "manage/findCategoryListByUserId.go?userId="+userId,
 		async : false,
 		success : function(data) {
 			var categoryList=data["aaData"];
-			$(obj).empty();
-			$(obj).append("<option value=''>All</option>");
+			$("#secCategoryList").append("<option value='0'>All</option>");
 			for(i=0;i<categoryList.length;i++){
 				var category=categoryList[i];
-				$(obj).append("<option value='"+category["id"]+"'>"+category["name"]+"</option>");
+				$("#secCategoryList").append("<option value='"+category["id"]+"'>"+category["name"]+"</option>");
 				
 			}
 			
 		}
 	});
+}
+
+function getAllProject(userId){
+    $.ajax({
+        type : 'POST',
+        url : "manage/findCategoryListByUserId.go?userId="+userId,
+        async : false,
+        success : function(data) {
+            var categoryList=data["aaData"];
+            $("#secCategoryList").append("<option value='0'>All</option>");
+            for(i=0;i<categoryList.length;i++){
+                var category=categoryList[i];
+                $("#secCategoryList").append("<option value='"+category["id"]+"'>"+category["name"]+"</option>");
+
+            }
+
+        }
+    });
 }
 function findList(o,u,d,c){
 	$(o).DataTable({

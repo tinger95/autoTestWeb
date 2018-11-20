@@ -139,7 +139,8 @@
 		   	</div>
 		   	<div class="collapse navbar-collapse" id="example-navbar-collapse" style="width:50%;float:left;">
 				<ul class="nav navbar-nav">
-				<c:forEach items="${menuList}" var="menu">
+				<
+					:forEach items="${menuList}" var="menu">
 					<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">${menu.name}<b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<c:forEach items="${menu.menuList}" var="childMenu">

@@ -27,9 +27,6 @@ public class UserController {
     private static final Logger LOGGER = Logger.getLogger(UserController.class);
 
     @Autowired(required = false)
-    private BaseUtil baseUtil;
-
-    @Autowired(required = false)
     private User user;
     @Autowired
     private UserService userService;
@@ -57,19 +54,37 @@ public class UserController {
      */
     @RequestMapping(value = "/welcome.go")
     public String welcome(HttpServletRequest request) {
-        System.out.println("首次访问跳转到登陆页面");
+        System.out.println("welcome");
         return "welcome";
     }
 
     /**
-     * 首页
+     * 程序入口
      *
      * @param request
      * @return
      */
-    @RequestMapping(value = "/home.go")
-    public String index(HttpServletRequest request) {
-        System.out.println("首次访问跳转到登陆页面");
+    @RequestMapping(value = "main.go")
+    public String redirectToMain(HttpServletRequest request, ModelMap modelMap) {
+        user = (User) request.getSession().getAttribute("user");
+
+        if (user != null) {
+            request.getSession().setAttribute("userId", user.getId());
+            request.getSession().setAttribute("userName", user.getName());
+            Role role = roleService.findRoleById(user.getRoleId());
+            request.getSession().setAttribute("isAdmin", role.getIsAdmin());
+            Menu conditionMenu = new Menu();
+            conditionMenu.setParentMenuId(-1);
+            conditionMenu.setRoleId(user.getRoleId());
+            menuList = menuService.findParentRoleMenuList(conditionMenu);
+            for (Menu m : menuList) {
+                conditionMenu.setParentMenuId(m.getId());
+                List<Menu> childMenuList = menuService.findParentRoleMenuList(conditionMenu);
+                m.setMenuList(childMenuList);
+            }
+            modelMap.put("menuList", menuList);
+            return "index";
+        }
         return "login";
     }
 
@@ -96,24 +111,12 @@ public class UserController {
                     //用户名密码正确
                     request.getSession().setAttribute("user", user);
                     //获取菜单信息
-                    request.getSession().setAttribute("userId", user.getId());
-                    request.getSession().setAttribute("userName", user.getName());
-                    Role role = roleService.findRoleById(user.getRoleId());
-                    modelMap.put("isAdmin", role.getIsAdmin());
-                    Menu conditionMenu = new Menu();
-                    conditionMenu.setParentMenuId(-1);
-                    conditionMenu.setRoleId(user.getRoleId());
-                    menuList = menuService.findParentRoleMenuList(conditionMenu);
-                    for (Menu m : menuList) {
-                        conditionMenu.setParentMenuId(m.getId());
-                        List<Menu> childMenuList = menuService.findParentRoleMenuList(conditionMenu);
-                        m.setMenuList(childMenuList);
-                    }
-                    modelMap.put("menuList", menuList);
-                    return "index";
+                    return this.redirectToMain(request, modelMap);
+                } else {
+                    modelMap.put("errorMessage", "密码错误");
+                    return "login";
                 }
             }
-            return "login";
         }
     }
 
@@ -158,7 +161,7 @@ public class UserController {
                 jo.put("roleName", user.getRoleName());
                 json.put(jo);
             }
-            baseUtil.writeJson(userList.size(), json, response);
+            BaseUtil.writeJson(userList.size(), json, response);
         } catch (Exception e) {
             LOGGER.info(e.toString());
             throw new RuntimeException(e.getMessage(), e.getCause());

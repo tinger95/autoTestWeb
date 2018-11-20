@@ -5,8 +5,10 @@ import com.autoTestWeb.service.CategoryService;
 import com.autoTestWeb.service.ClientService;
 import com.autoTestWeb.service.EnvironmentService;
 import com.autoTestWeb.service.ProjectService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +16,7 @@ import java.util.List;
 
 @Controller
 public class CaseController {
+    private static final Logger LOGGER = Logger.getLogger(CaseController.class);
 
     @Autowired(required = false)
     private List<Category> categoryList;
@@ -33,13 +36,17 @@ public class CaseController {
     private ClientService clientService;
 
     @RequestMapping(value = "case/initCase.go")
-    public String initCase(HttpServletRequest request) {
+    public String initCase(HttpServletRequest request, ModelMap modelMap) {
         // groupList = groupService.findGroupList();
         User user = (User) request.getSession().getAttribute("user");
         categoryList = categoryService.findCategoryListByUserId(user.getId());
         projectList = projectService.findProjectList();
         environmentList = environmentService.findEnvironmentList();
         clientList = clientService.findClientList();
+        modelMap.put("categoryList",categoryList);
+        modelMap.put("projectList",projectList);
+        modelMap.put("environmentList",environmentList);
+        modelMap.put("clientList",clientList);
         return "case/caseList";
     }
 }

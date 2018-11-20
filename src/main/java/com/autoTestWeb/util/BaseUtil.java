@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 public class BaseUtil {
     private static final Logger Logger = LoggerFactory.getLogger(BaseUtil.class);
 
-    public String toJson(int sEcho, int count, JSONArray json) {
+    public static  String toJson(int sEcho, int count, JSONArray json) {
         String jsonStr = "";
         jsonStr += "{\"sEcho\":" + sEcho + ",\"iTotalRecords\":" + count + ",\"iTotalDisplayRecords\":" + count
                 + ",\"aaData\":" + json.toString() + "}";
@@ -20,7 +20,7 @@ public class BaseUtil {
         return jsonStr;
     }
 
-    public void writeJson(int size, JSONArray json, HttpServletResponse response) {
+    public static void writeJson(int size, JSONArray json, HttpServletResponse response) {
         try {
             response.setContentType("text/json");
             response.setCharacterEncoding("UTF-8");
@@ -37,7 +37,7 @@ public class BaseUtil {
         }
     }
 
-    public void writeJson(JSONArray json, HttpServletResponse response) {
+    public static void writeJson(JSONArray json, HttpServletResponse response) {
         try {
             Logger.info(json.toString());
             response.setContentType("text/json");
@@ -55,7 +55,7 @@ public class BaseUtil {
         }
     }
 
-    public void writeJson(JSONObject jsonObject, HttpServletResponse response) {
+    public static void writeJson(JSONObject jsonObject, HttpServletResponse response) {
         response.setContentType("text/json");
         response.setCharacterEncoding("UTF-8");
         PrintWriter writer;
@@ -71,7 +71,7 @@ public class BaseUtil {
 
     }
 
-    protected void WriteInteger(int i, HttpServletResponse response) {
+    public static void WriteInteger(int i, HttpServletResponse response) {
         PrintWriter writer;
         try {
             writer = response.getWriter();

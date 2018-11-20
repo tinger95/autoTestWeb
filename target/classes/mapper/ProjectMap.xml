@@ -31,20 +31,20 @@
 		)tt
 	</select>
 	<select id="findProjectById" parameterType="Integer"  resultMap="resultMap">
-		select * from t_Project t where t.id=#{id}
+		select * from t_project t where t.id=#{id}
 	</select>
 	<insert id="insertProject" parameterType="Project">
-		insert into t_Project(name,code,insertUser,updateUser,insertTime,updateTime)
+		insert into t_project(name,code,insertUser,updateUser,insertTime,updateTime)
 		values(#{name},#{code},#{insertUser},#{updateUser},#{insertTime,jdbcType=TIMESTAMP},#{updateTime,jdbcType=TIMESTAMP})
 		<selectKey resultType="Integer" keyProperty="id" order="AFTER">  
         	SELECT LAST_INSERT_ID() AS id  
     	</selectKey> 
 	</insert>
 	<delete id="deleteProject" parameterType="Integer">
-		delete from t_Project where id=#{id}
+		delete from t_project where id=#{id}
 	</delete>
 	<update id="updateProject" parameterType="Project">
-		update t_Project set name=#{name},updateUser=#{updateUser} ,updateTime=#{updateTime,jdbcType=TIMESTAMP}
+		update t_project set name=#{name},updateUser=#{updateUser} ,updateTime=#{updateTime,jdbcType=TIMESTAMP}
 		where id=#{id}
 	</update>
 </mapper>  
