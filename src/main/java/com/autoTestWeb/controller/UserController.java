@@ -7,6 +7,7 @@ import com.autoTestWeb.model.UserGroup;
 import com.autoTestWeb.service.MenuService;
 import com.autoTestWeb.service.RoleService;
 import com.autoTestWeb.service.UserService;
+import com.autoTestWeb.service.UserGroupService;
 import com.autoTestWeb.util.BaseUtil;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
@@ -32,7 +33,8 @@ public class UserController {
     private UserService userService;
     @Autowired(required = false)
     private List<Menu> menuList;
-    // private UserGroupService userGroupService;
+    @Autowired
+    private UserGroupService userGroupService;
     @Autowired
     private RoleService roleService;
     @Autowired
@@ -167,4 +169,23 @@ public class UserController {
             throw new RuntimeException(e.getMessage(), e.getCause());
         }
     }
+
+    /**
+     * 初始化用户
+     */
+    @RequestMapping(value = "user/initUser.go")
+    public String initUser() {
+        userGroupList = userGroupService.findUserGroupList();
+        roleList = roleService.findRoleList();
+        return "user/userList";
+    }
+
+    /**
+     * 初始化用户组
+     */
+    @RequestMapping(value = "initUserGroup.go")
+    public String initUserGroup() {
+        return "/user/userGroupList";
+    }
+
 }
