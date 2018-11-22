@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -9,20 +10,7 @@
 
         $(function () {
             getAllUser(<%=session.getAttribute("userId")%>);
-            getAllCateogry($("#secUserList").val());
-            var categoryList=${categoryList};
-            $("#secCategoryList").append("<option value='0'>All</option>");
-            for(i=0;i<categoryList.length;i++){
-                var category=categoryList[i];
-                $("#secCategoryList").append("<option value='"+category["id"]+"'>"+category["name"]+"</option>");
-            }
-            var projectList=${projectList};
-            $("#secProjectList").append("<option value='0'>All</option>");
-            for(i=0;i<projectList.length;i++){
-                var project=projectList[i];
-                $("#secProjectList").append("<option value='"+project["id"]+"'>"+project["name"]+"</option>");
-            }
-            //findCaseList();
+            findCaseList();
         });
 
         function findCaseList() {
@@ -93,7 +81,7 @@
                         return str;
                     }
                 }];
-            var url = "case/findCaseList";
+            var url = "case/findCaseList.go";
             findList($('#tableCaseList'), url, data, columns);
         }
 
@@ -445,20 +433,34 @@
 <div class="maincontent">
     <div class="searchBox">
         <div class="search-line">
-            <label>用户名</label><select id="secUserList" class="form-control search-control"
-                                      onchange="getAllCateogry($('#secCategoryList'),this.value);findCaseList();"></select>
+            <label>用户名</label>
+            <select id="secUserList" class="form-control search-control"
+                                      onchange="getAllCateogry($('#secCategoryList'),this.value);findCaseList();">
+            </select>
         </div>
         <div class="search-line">
-            <label>项目</label><select id="secProjectList" list="projectList" listKey="id" listValue="name"
-                                     class="form-control search-control" onchange="findCaseList();"></select>
+            <label>项目</label>
+            <select id="secProjectList" list="projectList" listKey="id" listValue="name"
+                                     class="form-control search-control" onchange="findCaseList();">
+                <option value='0'>All</option>
+                <c:forEach items="${projectList}" var="project">
+                    <option value="${project.id}">${project.name}</option>
+                </c:forEach>
+            </select>
         </div>
         <div class="search-line">
             <label>Case名称</label>
             <input type="text" id="txtName" class="form-control search-control" onkeyup="findCaseList();"/>
         </div>
         <div class="search-line">
-            <label>文件夹</label><select id="secCategoryList" class="form-control search-control"
-                                      onchange="findCaseList();"></select>
+            <label>文件夹</label>
+            <select id="secCategoryList" class="form-control search-control"
+                                      onchange="findCaseList();">
+                <option value='0'>All</option>
+                <c:forEach items="${categoryList}" var="category">
+                    <option value="${category.id}">${category.name}</option>
+                </c:forEach>
+            </select>
         </div>
         <div class="clear"></div>
     </div>
