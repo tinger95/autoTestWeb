@@ -10,18 +10,17 @@
 
         $(function () {
             getAllUser(<%=session.getAttribute("userId")%>);
-            alert("aa");
-           // getAllCateogry($("#secUserList").val());
             findCaseList();
         });
 
         function findCaseList() {
-            var data = {
-                "executeCase.userId": $("#secUserList").val(),
-                "executeCase.name": $("#txtName").val(),
-                "executeCase.category": $("#secCategoryList").val(),
-                "executeCase.projectId": $("#secProjectList").val()
+            var executeCase = {
+                "userId": $("#secUserList").val(),
+                "name": $("#txtName").val(),
+                "category": $("#secCategoryList").val(),
+                "projectId": $("#secProjectList").val()
             };
+
             var columns = [
                 {
                     "data": "id",
@@ -83,14 +82,62 @@
                         return str;
                     }
                 }];
-            var url = "case/findCaseList.go";
-            findList($('#tableCaseList'), url, data, columns);
+//            var url = "case/findCaseList.go";
+//            findList($('#tableCaseList'), executeCase, url, columns);
+
+//            $('#tableCaseList').DataTable({
+//                processing: true,//显示“处理中...”
+//                ordering: false,
+//                destroy: true,
+//                searching: false,
+//                serverSide: true,//开启服务器模式
+//                lengthMenu: [[10, 20, 50, 100, 1000], ["10", "20", "50", "100", "1000"]],
+//                ajax: {
+//                    type: "post",
+//                    url: "case/findCaseList.go",
+//                    contentType: "application/json;charset=utf-8",
+//                    dataType: "json",
+//                    data: JSON.stringify(executeCase),
+//                },
+//                columns: columns,
+//                aoColumnDefs: [{
+//                    sDefaultContent: '',
+//                    aTargets: ['_all']
+//                }],
+//                oLanguage: {
+//                    "sLengthMenu": "每页显示 _MENU_ 条记录",
+//                    "sZeroRecords": "抱歉， 没有找到",
+//                    "sInfo": "从 _START_ 到 _END_ 共 _TOTAL_ 条数据",
+//                    "sInfoEmpty": "没有数据",
+//                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+//                    "oPaginate": {
+//                        "sFirst": "首页",
+//                        "sPrevious": "上一页",
+//                        "sNext": "后一页",
+//                        "sLast": "尾页"
+//                    }
+//                }
+//            });
+            $.ajax({
+                type: 'POST',
+                url: "case/findCaseList.go",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(executeCase),
+                success: function (data) {
+                    alert(data.id);
+                    //findList($('#tableCaseList'),dataObject, columns);
+                },
+                error: function () {
+                    alert("请求失败");
+                }
+            });
         }
 
         function addCase() {
             $.ajax({
                 type: 'POST',
-                url: "case/insertCase",
+                url: "case/insertCase.go",
                 data: {
                     "executeCase.name": $("#txtCaseName").val(),
                     "executeCase.comment": $("#txtCaseComment").val(),
@@ -437,13 +484,13 @@
         <div class="search-line">
             <label>用户名</label>
             <select id="secUserList" class="form-control search-control"
-                                      onchange="getAllCateogry($('#secCategoryList'),this.value);findCaseList();">
+                    onchange="getAllCateogry($('#secCategoryList'),this.value);findCaseList();">
             </select>
         </div>
         <div class="search-line">
             <label>项目</label>
             <select id="secProjectList" list="projectList" listKey="id" listValue="name"
-                                     class="form-control search-control" onchange="findCaseList();">
+                    class="form-control search-control" onchange="findCaseList();">
                 <option value='0'>All</option>
                 <c:forEach items="${projectList}" var="project">
                     <option value="${project.id}">${project.name}</option>
@@ -457,7 +504,7 @@
         <div class="search-line">
             <label>文件夹</label>
             <select id="secCategoryList" class="form-control search-control"
-                                      onchange="findCaseList();">
+                    onchange="findCaseList();">
                 <option value='0'>All</option>
                 <c:forEach items="${categoryList}" var="category">
                     <option value="${category.id}">${category.name}</option>
@@ -514,12 +561,21 @@
                 </div>
                 <div class='maincontent'>
                     <lable>所属项目</lable>
-                    <s:select id="secProject" list="projectList" listKey="id" listValue="name" headerValue='请选择'
-                              headerKey='' cssClass="form-control"/>
+                    <select id="secProject" list="projectList" listKey="id" listValue="name" headerValue='请选择'
+                            headerKey='' class="form-control">
+                        <option value='0'>All</option>
+                        <c:forEach items="${projectList}" var="project">
+                            <option value="${project.id}">${project.name}</option>
+                        </c:forEach>
+                    </select>
                 </div>
                 <div class='maincontent'>
                     <lable>所属文件夹</lable>
                     <select id="secCategory" class="form-control">
+                        <option value='0'>All</option>
+                        <c:forEach items="${categoryList}" var="category">
+                            <option value="${category.id}">${category.name}</option>
+                        </c:forEach>
                     </select>
                 </div>
             </div>
@@ -558,8 +614,8 @@
                 </div>
                 <div class='maincontent'>
                     <lable>指定客户端</lable>
-                    <s:select id="secClient" list="clientList" listKey="ip" listValue="name" headerValue='随缘'
-                              headerKey='' cssClass="form-control"/>
+                    <select id="secClient" list="clientList" listKey="ip" listValue="name" headerValue='随缘'
+                            headerKey='' cssClass="form-control"/>
                 </div>
                 <div class='maincontent'>
                     <lable>是否截图</lable>
