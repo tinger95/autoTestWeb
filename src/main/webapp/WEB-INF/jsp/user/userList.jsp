@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib prefix="s" uri="/struts-tags"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -29,20 +29,23 @@
 					"defaultContent" : "<span class='glyphicon glyphicon-pencil' onclick='showUpdateUserPanel(this)' style='cursor:pointer;'>"
 							+ "</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='glyphicon glyphicon-trash'  style='cursor:pointer;' onclick='deleteUser(this);'></span>"
 				} ];
-	var url="user/findUserList";
+	var url="user/findUserList.go";
+
 	$(function() {
 		findList($('#tableUserList'),url,"",columns);
 	});
 	function addUser() {
 		$.ajax({
 			type : 'POST',
-			url : "user/insertUser",
-			data : {
-				"user.name" : $("#txtUserName").val(),
-				"user.password" : $("#txtPassword").val(),
-				"user.userGroupId" : $("#secUserGroup").val(),
-				"user.roleId" : $("#secRole").val()
-			},
+			url : "user/insertUser.go",
+			contentType:"application/json;charset=utf-8",
+			dataType : "json",
+			data :JSON.stringify({
+				"name" : $("#txtUserName").val(),
+				"password" : $("#txtPassword").val(),
+				"userGroupId" : $("#secUserGroup").val(),
+				"roleId" : $("#secRole").val()
+			}),
 			success : function(data) {
 				if (data > 0) {
 					alert("添加成功");
@@ -165,11 +168,23 @@
 					</div>
 					<div class='maincontent'>
 						<lable>所属组</lable>
-						<s:select id="secUserGroup" list="userGroupList" listKey="id" listValue="name" headerValue='请选择' headerKey='0'/>
+						<%--<s:select id="secUserGroup" list="userGroupList" listKey="id" listValue="name" headerValue='请选择' headerKey='0'/>--%>
+						<select id="secUserGroup" >
+							<option value="">请选择</option>
+							<c:forEach items="${userGroupList}" var="userGroup">
+								<option value="${userGroup.id}">${userGroup.name}</option>
+							</c:forEach>
+						</select>
 					</div>
 					<div class='maincontent'>
 						<lable>角色</lable>
-						<s:select id="secRole" list="roleList" listKey="id" listValue="name" headerValue='请选择' headerKey='0'/>
+						<%--<c:select id="secRole" list="roleList" listKey="id" listValue="name" headerValue='请选择' headerKey='0'/>--%>
+						<select id="secRole" >
+							<option value="">请选择</option>
+							<c:forEach items="${roleList}" var="role">
+								<option value="${role.id}">${role.name}</option>
+							</c:forEach>
+						</select>
 					</div>
 				</div>
 				<div class="modal-footer">

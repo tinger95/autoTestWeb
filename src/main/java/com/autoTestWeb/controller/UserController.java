@@ -7,6 +7,7 @@ import com.autoTestWeb.model.UserGroup;
 import com.autoTestWeb.service.MenuService;
 import com.autoTestWeb.service.RoleService;
 import com.autoTestWeb.service.UserService;
+import com.autoTestWeb.service.UserGroupService;
 import com.autoTestWeb.util.BaseUtil;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
@@ -16,17 +17,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.ws.Response;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
 @Controller
-public class UserController {
+public class UserController{
     private static final Logger LOGGER = Logger.getLogger(UserController.class);
 
     @Autowired(required = false)
@@ -35,7 +36,8 @@ public class UserController {
     private UserService userService;
     @Autowired(required = false)
     private List<Menu> menuList;
-    // private UserGroupService userGroupService;
+    @Autowired
+    private UserGroupService userGroupService;
     @Autowired
     private RoleService roleService;
     @Autowired
@@ -48,6 +50,7 @@ public class UserController {
     private UserGroup userGroup;
     private int userGroupId;
     private int userId;
+
 
     /**
      * 欢迎页面
@@ -170,4 +173,38 @@ public class UserController {
             throw new RuntimeException(e.getMessage(), e.getCause());
         }
     }
+    /**
+     * 初始化用户
+     */
+    @RequestMapping(value = "user/initUser.go")
+    public String initUser(ModelMap modelMap) {
+        userGroupList = userGroupService.findUserGroupList();
+        roleList = roleService.findRoleList();
+        modelMap.put("userGroupList",userGroupList);
+        modelMap.put("roleList",roleList);
+        return "user/userList";
+    }
+
+    /**
+     * 初始化用户组
+     */
+    @RequestMapping(value = "user/initUserGroup.go")
+    public String initUserGroup() {
+        return "/user/userGroupList";
+    }
+    /**
+     * 新增用户
+     */
+    @RequestMapping(value = "user/insertUser.go")
+    @ResponseBody
+    public void insertUser(@RequestBody User user,HttpServletResponse response) {
+        try {
+            int i = userService.insertUser(user);
+            BaseUtil.WriteInteger(i,response);
+        } catch (Exception e) {
+            LOGGER.info(e.toString());
+            throw new RuntimeException(e.getMessage(),e.getCause());
+        }
+    }
+
 }
