@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.ws.Response;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
@@ -200,7 +199,7 @@ public class UserController{
     public void insertUser(@RequestBody User user,HttpServletResponse response) {
         try {
             int i = userService.insertUser(user);
-            BaseUtil.WriteInteger(i,response);
+            BaseUtil.writeInteger(i,response);
         } catch (Exception e) {
             LOGGER.info(e.toString());
             throw new RuntimeException(e.getMessage(),e.getCause());

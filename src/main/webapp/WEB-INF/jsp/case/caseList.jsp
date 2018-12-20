@@ -40,7 +40,7 @@
                     "data": null,
                     "width": "200px",
                     "render": function (data) {
-                        var str = "<a href='javascript:void(0);' value='case/initBaseCase?caseId=" + data.id + "' class='link'>" + data.name + "</a>";
+                        var str = "<a href='javascript:void(0);' value='case/initBaseCase.go?caseId=" + data.id + "' class='link'>" + data.name + "</a>";
                         return str;
                     }
                 },
@@ -82,69 +82,23 @@
                         return str;
                     }
                 }];
-//            var url = "case/findCaseList.go";
-//            findList($('#tableCaseList'), executeCase, url, columns);
-
-//            $('#tableCaseList').DataTable({
-//                processing: true,//显示“处理中...”
-//                ordering: false,
-//                destroy: true,
-//                searching: false,
-//                serverSide: true,//开启服务器模式
-//                lengthMenu: [[10, 20, 50, 100, 1000], ["10", "20", "50", "100", "1000"]],
-//                ajax: {
-//                    type: "post",
-//                    url: "case/findCaseList.go",
-//                    contentType: "application/json;charset=utf-8",
-//                    dataType: "json",
-//                    data: JSON.stringify(executeCase),
-//                },
-//                columns: columns,
-//                aoColumnDefs: [{
-//                    sDefaultContent: '',
-//                    aTargets: ['_all']
-//                }],
-//                oLanguage: {
-//                    "sLengthMenu": "每页显示 _MENU_ 条记录",
-//                    "sZeroRecords": "抱歉， 没有找到",
-//                    "sInfo": "从 _START_ 到 _END_ 共 _TOTAL_ 条数据",
-//                    "sInfoEmpty": "没有数据",
-//                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
-//                    "oPaginate": {
-//                        "sFirst": "首页",
-//                        "sPrevious": "上一页",
-//                        "sNext": "后一页",
-//                        "sLast": "尾页"
-//                    }
-//                }
-//            });
-            $.ajax({
-                type: 'POST',
-                url: "case/findCaseList.go",
-                contentType: "application/json;charset=utf-8",
-                dataType: "json",
-                data: JSON.stringify(executeCase),
-                success: function (data) {
-                    alert(data.id);
-                    //findList($('#tableCaseList'),dataObject, columns);
-                },
-                error: function () {
-                    alert("请求失败");
-                }
-            });
+            var url="case/findCaseList.go";
+            findList($('#tableCaseList'), url, executeCase,columns);
         }
 
         function addCase() {
+            var executeCase={
+                "name": $("#txtCaseName").val(),
+                "comment": $("#txtCaseComment").val(),
+                "projectId": $("#secProject").val(),
+                "category": $("#secCategory").val()
+            }
             $.ajax({
                 type: 'POST',
                 url: "case/insertCase.go",
-                data: {
-                    "executeCase.name": $("#txtCaseName").val(),
-                    "executeCase.comment": $("#txtCaseComment").val(),
-                    "executeCase.projectId": $("#secProject").val(),
-                    "executeCase.category": $("#secCategory").val()
-
-                },
+                contentType : "application/json;charset=utf-8",
+                dataType : "json",
+                data: JSON.stringify(executeCase),
                 success: function (data) {
                     if (data > 0) {
                         alert("添加成功");
@@ -156,16 +110,19 @@
         }
 
         function updateCase() {
+            var executeCase = {
+                "id": $("#txtCaseId").val(),
+                "name": $("#txtCaseName").val(),
+                "comment": $("#txtCaseComment").val(),
+                "projectId": $("#secProject").val(),
+                "category": $("#secCategory").val()
+            }
             $.ajax({
                 type: 'POST',
-                url: "case/updateCase",
-                data: {
-                    "executeCase.id": $("#txtCaseId").val(),
-                    "executeCase.name": $("#txtCaseName").val(),
-                    "executeCase.comment": $("#txtCaseComment").val(),
-                    "executeCase.projectId": $("#secProject").val(),
-                    "executeCase.category": $("#secCategory").val()
-                },
+                url: "case/updateCase.go",
+                contentType : "application/json;charset=utf-8",
+                dataType : "json",
+                data: JSON.stringify(executeCase),
                 success: function (data) {
                     if (data > 0) {
                         alert("修改成功");
@@ -179,7 +136,7 @@
             if (confirm("确定删除？")) {
                 $.ajax({
                     type: 'POST',
-                    url: "case/deleteCase?caseId=" + $(obj).parent("td").siblings().eq(0).text(),
+                    url: "case/deleteCase.go?caseId=" + $(obj).parent("td").siblings().eq(0).text(),
                     success: function (data) {
                         if (data > 0) {
                             alert("删除成功");
@@ -210,7 +167,7 @@
             $("#txtCaseId").val(caseId);
             $.ajax({
                 type: 'POST',
-                url: "case/findCaseById?caseId=" + caseId,
+                url: "case/findCaseById.go?caseId=" + caseId,
                 async: false,
                 success: function (data) {
                     getAllCateogry($("#secCategory"), $("#secUserList").val());
@@ -321,17 +278,19 @@
         }
 
         function copyCase(obj) {
-            var caseId = $(obj).parent("td").siblings().eq(0).text();
+            var copeCase={
+                "id": $("#txtCaseId").val(),
+                "name": $("#txtCaseName").val(),
+                "comment": $("#txtCaseComment").val(),
+                "projectId": $("#secProject").val(),
+                "category": $("#secCategory").val()
+            }
             $.ajax({
                 type: 'POST',
-                url: "case/copyCase?caseId=" + caseId,
-                data: {
-                    "executeCase.id": $("#txtCaseId").val(),
-                    "executeCase.name": $("#txtCaseName").val(),
-                    "executeCase.comment": $("#txtCaseComment").val(),
-                    "executeCase.projectId": $("#secProject").val(),
-                    "executeCase.category": $("#secCategory").val()
-                },
+                url: "case/copyCase.go",
+                contentType : "application/json;charset=utf-8",
+                dataType : "json",
+                data: JSON.stringify(copeCase),
                 success: function (data) {
                     if (data > 0) {
                         alert("Copy成功");
@@ -437,7 +396,7 @@
             $("#txtCaseId").val(caseId);
             $.ajax({
                 type: 'POST',
-                url: "case/findCaseById?caseId=" + caseId,
+                url: "case/findCaseById.go?caseId=" + caseId,
                 async: false,
                 success: function (data) {
                     getAllCateogry($("#secCategory"), <%=session.getAttribute("userId")%>);

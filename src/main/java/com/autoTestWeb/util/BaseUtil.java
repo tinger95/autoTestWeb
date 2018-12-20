@@ -71,7 +71,7 @@ public class BaseUtil {
 
     }
 
-    public static void WriteInteger(int i, HttpServletResponse response) {
+    public static void writeInteger(int i, HttpServletResponse response) {
         PrintWriter writer;
         try {
             writer = response.getWriter();

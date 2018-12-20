@@ -9,24 +9,21 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>AutoTestWeb</title>
-<link href="css/bootstrap.css" rel="stylesheet" type="text/css">
-<script src="js/jquery.min.js" type="text/javascript"></script>
-<script src="js/jquery.cookie.js" type="text/javascript"></script>
-<script src="js/bootstrap.min.js" type="text/javascript"></script>
-<link href="css/main.css" rel="stylesheet" type="text/css">
-<link href="css/bootstrap-dialog.css" rel="stylesheet" type="text/css">
-<link href="css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css">
-<link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
-<script src="js/jquery.dataTables.min.js" type="text/javascript"></script>
-<script src="js/dataTables.bootstrap.min.js" type="text/javascript"></script>
-<script src="js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
-<script src="js/bootstrap-datetimepicker.zh-CN.js" type="text/javascript"></script>
-<script src="js/common.js" type="text/javascript"></script>
-<script src="js/bootstrap-dialog.js" type="text/javascript"></script>
+<link href="${basePath}/css/bootstrap.css" rel="stylesheet" type="text/css">
+<script src="${basePath}js/jquery.min.js" type="text/javascript"></script>
+<script src="${basePath}js/jquery.cookie.js" type="text/javascript"></script>
+<script src="${basePath}js/bootstrap.min.js" type="text/javascript"></script>
+<link href="${basePath}css/main.css" rel="stylesheet" type="text/css">
+<link href="${basePath}css/bootstrap-dialog.css" rel="stylesheet" type="text/css">
+<link href="${basePath}css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="${basePath}css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css">
+<script src="${basePath}js/jquery.dataTables.min.js" type="text/javascript"></script>
+<script src="${basePath}js/dataTables.bootstrap.min.js" type="text/javascript"></script>
+<script src="${basePath}js/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+<script src="${basePath}js/bootstrap-datetimepicker.zh-CN.js" type="text/javascript"></script>
+<script src="${basePath}js/common.js" type="text/javascript"></script>
+<script src="${basePath}js/bootstrap-dialog.js" type="text/javascript"></script>
 <style>
-
-
-
 </style>
 <script>
 	var index=-1;
@@ -143,7 +140,7 @@
 					<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">${menu.name}<b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<c:forEach items="${menu.menuList}" var="childMenu">
-								<li><a href="javascript:void(0);" value="${childMenu.action}.go" class="link">${childMenu.name}</a></li>
+								<li><a href="javascript:void(0);" value="${childMenu.action}" class="link">${childMenu.name}</a></li>
 								<li class="divider"></li>
 							</c:forEach>
 						</ul>

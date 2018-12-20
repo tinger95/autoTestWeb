@@ -84,7 +84,7 @@ function getAllProject(userId) {
     });
 }
 
-function findList(o, d, u, c) {
+function findList(o, u, d, c) {
     $(o).DataTable({
         "processing": true,
         "ordering": false,
@@ -92,14 +92,16 @@ function findList(o, d, u, c) {
         "searching": false,
         "serverSide": true,
         "lengthMenu": [[10, 20, 50, 100, 1000], ["10", "20", "50", "100", "1000"]],
-        ajax: {
+        "ajax": {
             "type": "post",
             "url": u,
             "contentType": "application/json;charset=utf-8",
             "dataType": "json",
-            "data": JSON.stringify(d),
+            data:function() {
+                return JSON.stringify(d)
+            }
         },
-        columns: c,
+        "columns": c,
         "aoColumnDefs": [{
             sDefaultContent: '',
             aTargets: ['_all']

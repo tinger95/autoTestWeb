@@ -9,14 +9,12 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -87,4 +85,75 @@ public class CaseController {
             throw new RuntimeException(e.getMessage(), e.getCause());
         }
     }
+
+    @RequestMapping(value = "case/insertCase.go")
+    public void insertCase(HttpServletRequest request, HttpServletResponse response, @RequestBody Case executeCase) {
+        try {
+            User user = (User) request.getSession().getAttribute("user");
+            executeCase.setUserId(user.getId());
+            Date date = new Date();
+            executeCase.setUpdateTime(date);
+            executeCase.setInsertTime(date);
+            int i = caseService.insertCase(executeCase, 0);
+            BaseUtil.writeInteger(i, response);
+        } catch (Exception e) {
+            LOGGER.info(e.toString());
+            throw new RuntimeException(e.toString());
+        }
+    }
+
+    @RequestMapping(value = "case/findCaseById.go")
+    public void findCaseById(@RequestParam("caseId") String caseId, HttpServletResponse response) {
+        try {
+            Case c = caseService.findCaseById(Integer.parseInt(caseId));
+            JSONArray json = new JSONArray();
+            JSONObject jo = new JSONObject();
+            jo.put("id", c.getId());
+            jo.put("name", c.getName());
+            jo.put("comment", c.getComment());
+            jo.put("projectId", c.getProjectId());
+            jo.put("category", c.getCategory());
+            json.put(jo);
+            BaseUtil.writeJson(1, json, response);
+        } catch (Exception e) {
+            LOGGER.info(e.toString());
+            throw new RuntimeException(e.toString());
+        }
+    }
+
+    @RequestMapping(value = "case/updateCase.go")
+    public void updateCase(@RequestBody Case executeCase, HttpServletResponse response) {
+        try {
+            Date date = new Date();
+            executeCase.setUpdateTime(date);
+            int i = caseService.updateCase(executeCase);
+            BaseUtil.writeInteger(i, response);
+        } catch (Exception e) {
+            LOGGER.info(e.toString());
+            throw new RuntimeException(e.toString());
+        }
+    }
+
+    @RequestMapping(value = "case/deleteCase.go")
+    public void deleteCase(@RequestParam("caseId") String caseId, HttpServletResponse response) {
+        int i = caseService.deleteCase(Integer.parseInt(caseId));
+        BaseUtil.writeInteger(i, response);
+    }
+
+    @RequestMapping(value = "case/copyCase.go")
+    public void copyCase(@RequestBody Case copeCase, HttpServletRequest request, HttpServletResponse response) {
+        try {
+            User user = (User) request.getSession().getAttribute("user");
+            copeCase.setUserId(user.getId());
+            Date date = new Date();
+            copeCase.setInsertTime(date);
+            copeCase.setUpdateTime(date);
+            int i = caseService.insertCase(copeCase, copeCase.getId());
+            BaseUtil.writeInteger(i, response);
+        } catch (Exception e) {
+            LOGGER.info(e.toString());
+            throw new RuntimeException(e.toString());
+        }
+    }
+
 }
